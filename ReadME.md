@@ -68,3 +68,4 @@ python main.py
 All rights reserved.  
 This project is provided for demonstration or evaluation purposes only.  
 Use, modification, or redistribution without explicit permission is not allowed.
+Please contact me for permission @ ```jishnusetia8@gmail.com```
