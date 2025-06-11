@@ -2,7 +2,7 @@
 # HireScope AI — AI Interview Assistant
 
 ### Overview
-HireScope AI is an intelligent interview assistant designed for HR professionals. It listens to live interviews between the interviewer and candidate, transcribes the conversation using speech recognition, and then suggests insightful follow-up questions using an AI language model (Ollama). At the end of the interview, it generates a CSV report summarizing the session.
+HireScope AI is an intelligent interview assistant designed for HR professionals. It listens to live interviews between the interviewer and candidate, transcribes the conversation using speech recognition, and then suggests insightful follow-up questions using an AI language model (LLaMA 3.2). At the end of the interview, it generates a CSV report summarizing the session.
 
 The tool is built using Python and Tkinter for the GUI, with no database dependencies. It leverages local speech recognition and Ollama's LLM API for AI-powered suggestions.
 
