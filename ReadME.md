@@ -21,7 +21,7 @@ The tool is built using Python and Tkinter for the GUI, with no database depende
 
 ### Getting Started
 #### Prerequisites
-- Python 3.9 or later (Can be installed from Microsoft Store or ```https://www.python.org/downloads/```)
+- Python 3.9 or later but under Python 3.13 (Can be installed from Microsoft Store or ```https://www.python.org/downloads/```)
 
 - Ollama installed and running locally with the llama3.2 model (Can be installed from ```https://ollama.com/download``` and to get the model, run ```ollama pull llama3.2```)
 
