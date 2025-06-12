@@ -13,7 +13,11 @@ The tool is built using Python and Tkinter for the GUI, with no database depende
 - ✅ AI-based response rating  
 - 🖥️ User-friendly GUI (start/stop interview)  
 - 📊 CSV report generation  
-- ⚙️ Lightweight — no database required  
+- ⚙️ Lightweight — no database required
+
+![alt text][imagePrev]
+
+[imagePrev]: https://github.com/JishnuSetia/HireScopeAI/blob/main/IMAGE-HIRESCOPE.png?raw=true "PREVIEW"
 
 ### Getting Started
 #### Prerequisites
