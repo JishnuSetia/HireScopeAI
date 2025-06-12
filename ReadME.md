@@ -23,6 +23,8 @@ The tool is built using Python and Tkinter for the GUI, with no database depende
 
 - Microphone on your system for live audio input
 
+- Minimum 16 GB of RAM on your device (Very slow performance on 16 GB. Greater the RAM, Faster the Performance)
+
 #### Python Packages
 Create a virtual environment first by running
 
