@@ -29,6 +29,19 @@ Interviewer questions:
 """
     return query_ollama(prompt)
 
+def getReportForInterview(transcript):
+    prompt = f"""
+You are an AI interview assistant. Given the candidate's answer below, Generate a report summarizing the candidates responses and suitability and stuff.
+
+Candidate's response:
+\"\"\"{transcript}\"\"\"
+
+Candidate Rating:
+
+Interviewer Summary:
+"""
+    return query_ollama(prompt)
+
 def check_ollama_running():
     try:
         r = requests.get("http://localhost:11434")

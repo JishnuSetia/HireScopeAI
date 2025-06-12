@@ -1,55 +1,39 @@
-import numpy as np
-import sounddevice as sd
-import speech_recognition as sr
+import queue
 import threading
+import speech_recognition as sr
 
 class AudioStreamHandler:
-    def __init__(self, audio_levels, transcript_queue):
-        self.audio_levels = audio_levels
-        self.queue = transcript_queue
-        self.audio_stream = None
+    def __init__(self):
         self.recognizer = sr.Recognizer()
+        self.microphone = sr.Microphone()
+        self.audio_queue = queue.Queue()
         self.listening = False
+        self._stop_event = threading.Event()
 
-    def audio_callback(self, indata, frames, time, status):
-        volume_norm = np.linalg.norm(indata) * 10
-        volume_norm = min(volume_norm, 1.0)
-        self.audio_levels.append(volume_norm)
-        if len(self.audio_levels) > 60:
-            self.audio_levels.pop(0)
-
-    def start_audio_stream(self):
+    def start_listening(self):
         if self.listening:
             return
         self.listening = True
-        self.audio_stream = sd.InputStream(callback=self.audio_callback)
-        self.audio_stream.start()
+        self._stop_event.clear()
+        threading.Thread(target=self._listen_in_background, daemon=True).start()
 
-    def stop_audio_stream(self):
-        if not self.listening:
-            return
+    def stop_listening(self):
+        self._stop_event.set()
         self.listening = False
-        if self.audio_stream:
-            self.audio_stream.stop()
-            self.audio_stream.close()
-            self.audio_stream = None
 
-    def recognize_speech(self, process_callback, keep_listening_flag):
-        def listen_loop():
-            with sr.Microphone() as source:
-                self.recognizer.adjust_for_ambient_noise(source)
-                while keep_listening_flag:
-                    try:
-                        print("Listening...")
-                        audio = self.recognizer.listen(source, phrase_time_limit=10)
-                        print("Recognizing...")
-                        transcript = self.recognizer.recognize_google(audio)
-                        self.queue.put(transcript)
-                        process_callback()
-                    except sr.UnknownValueError:
-                        self.queue.put("[Could not understand audio]")
-                        process_callback()
-                    except sr.RequestError as e:
-                        self.queue.put(f"[Speech Recognition error: {e}]")
-                        process_callback()
-        threading.Thread(target=listen_loop, daemon=True).start()
+    def _listen_in_background(self):
+        with self.microphone as source:
+            self.recognizer.adjust_for_ambient_noise(source)
+            while not self._stop_event.is_set():
+                try:
+                    audio = self.recognizer.listen(source, timeout=5, phrase_time_limit=15)
+                    transcript = self.recognizer.recognize_google(audio)
+                    self.audio_queue.put(transcript)
+                except sr.WaitTimeoutError:
+                    continue
+                except sr.UnknownValueError:
+                    # Can't understand audio, skip
+                    self.audio_queue.put(None)
+                except Exception as e:
+                    self.audio_queue.put(f"Error: {e}")
+    
